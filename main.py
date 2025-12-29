@@ -128,97 +128,104 @@ async def analyze_resume_with_groq(resume_text: str, job_description: str = "") 
     COMPREHENSIVE ATS ANALYSIS FRAMEWORK:
 
     1. KEYWORD OPTIMIZATION ANALYSIS (30% weight):
-       - Industry-specific technical keywords
-       - Action verbs and power words
-       - Skills matching (hard and soft skills)
-       - Job title variations and synonyms
-       - Certification and qualification keywords
-       - Location and availability keywords
+       - Extract keywords directly from the job description (if provided) and compare with resume
+       - Identify technical terms, skills, and qualifications mentioned in resume
+       - Analyze action verbs and power words usage
+       - Evaluate industry-relevant terminology presence
+       - Check for job title variations and role-specific language
+       - Assess professional certifications and qualifications alignment
 
     2. FORMATTING & STRUCTURE ANALYSIS (25% weight):
-       - ATS-friendly formatting (no tables, graphics, headers/footers)
-       - Proper section headers (Experience, Education, Skills, etc.)
-       - Consistent date formatting
-       - Bullet points vs. paragraphs
-       - Font compatibility and readability
-       - File format compatibility
+       - ATS-friendly formatting (no tables, graphics, complex layouts)
+       - Clear section headers (Experience, Education, Skills, Contact, etc.)
+       - Consistent date formatting and chronological order
+       - Proper use of bullet points vs. paragraphs
+       - Professional font usage and readability
+       - File format compatibility and parsing ease
 
     3. CONTENT QUALITY & RELEVANCE (25% weight):
-       - Quantified achievements with metrics
-       - Relevant work experience progression
-       - Education alignment with role
-       - Skills relevance and currency
-       - Industry experience match
-       - Career gap analysis
+       - Quantified achievements with specific metrics and results
+       - Relevant work experience progression and career growth
+       - Education and certification alignment with role requirements
+       - Skills currency and relevance to target position
+       - Industry experience depth and breadth
+       - Career gap identification and impact assessment
 
     4. PROFESSIONAL PRESENTATION (20% weight):
-       - Contact information completeness
-       - Professional summary effectiveness
-       - Chronological consistency
-       - Grammar and spelling accuracy
-       - Length appropriateness
-       - Overall professional tone
+       - Complete contact information (email, phone, location)
+       - Professional summary or objective effectiveness
+       - Chronological consistency and logical flow
+       - Grammar, spelling, and language quality
+       - Appropriate resume length for experience level
+       - Overall professional tone and presentation
 
-    DETAILED SCORING METHODOLOGY:
-    - 90-100: Exceptional - Top 5% of candidates, likely to pass all ATS filters
-    - 80-89: Strong - Top 15% of candidates, high interview probability
-    - 70-79: Good - Above average, needs minor optimizations
-    - 60-69: Fair - Average candidate, requires significant improvements
-    - 50-59: Weak - Below average, major revisions needed
-    - Below 50: Poor - Unlikely to pass ATS screening
+    SCORING METHODOLOGY:
+    - 90-100: Exceptional - Top 5% of candidates, will likely pass all ATS filters and secure interviews
+    - 80-89: Strong - Top 15% of candidates, high probability of passing ATS screening
+    - 70-79: Good - Above average, needs minor optimizations to improve ranking
+    - 60-69: Fair - Average performance, requires targeted improvements for better results
+    - 50-59: Weak - Below average, needs significant revisions to be competitive
+    - Below 50: Poor - Major improvements needed, unlikely to pass initial ATS screening
+
+    INSTRUCTIONS FOR KEYWORD ANALYSIS:
+    - If job description is provided, extract specific keywords from it and match against resume
+    - If no job description provided, identify professional terms, skills, and industry language from resume
+    - Focus on role-relevant keywords rather than generic terms
+    - Suggest missing keywords based on industry standards and common requirements
+    - Evaluate keyword density and natural integration
 
     Provide your analysis in this EXACT JSON format (ensure valid JSON syntax):
     {{
         "ats_score": <integer_0_to_100>,
-        "overall_feedback": "<2-3_sentence_comprehensive_assessment>",
+        "overall_feedback": "<comprehensive_2-3_sentence_assessment_with_specific_insights>",
         "strengths": [
-            "<specific_strength_with_context>",
-            "<specific_strength_with_context>",
-            "<specific_strength_with_context>",
-            "<specific_strength_with_context>"
+            "<specific_strength_with_actionable_context>",
+            "<specific_strength_with_actionable_context>",
+            "<specific_strength_with_actionable_context>",
+            "<specific_strength_with_actionable_context>"
         ],
         "areas_for_improvement": [
-            "<specific_actionable_improvement>",
-            "<specific_actionable_improvement>",
-            "<specific_actionable_improvement>",
-            "<specific_actionable_improvement>"
+            "<specific_actionable_improvement_with_clear_guidance>",
+            "<specific_actionable_improvement_with_clear_guidance>",
+            "<specific_actionable_improvement_with_clear_guidance>",
+            "<specific_actionable_improvement_with_clear_guidance>"
         ],
         "keyword_analysis": {{
             "missing_keywords": [
-                "<critical_missing_keyword>",
-                "<critical_missing_keyword>",
-                "<critical_missing_keyword>",
-                "<critical_missing_keyword>",
-                "<critical_missing_keyword>"
+                "<important_missing_keyword_relevant_to_role>",
+                "<important_missing_keyword_relevant_to_role>",
+                "<important_missing_keyword_relevant_to_role>",
+                "<important_missing_keyword_relevant_to_role>",
+                "<important_missing_keyword_relevant_to_role>"
             ],
             "present_keywords": [
-                "<found_relevant_keyword>",
-                "<found_relevant_keyword>",
-                "<found_relevant_keyword>",
-                "<found_relevant_keyword>",
-                "<found_relevant_keyword>"
+                "<relevant_keyword_found_in_resume>",
+                "<relevant_keyword_found_in_resume>",
+                "<relevant_keyword_found_in_resume>",
+                "<relevant_keyword_found_in_resume>",
+                "<relevant_keyword_found_in_resume>"
             ],
             "keyword_score": <integer_0_to_100>
         }},
         "formatting_score": <integer_0_to_100>,
         "content_quality_score": <integer_0_to_100>,
         "recommendations": [
-            "<specific_actionable_recommendation>",
-            "<specific_actionable_recommendation>",
-            "<specific_actionable_recommendation>",
-            "<specific_actionable_recommendation>",
-            "<specific_actionable_recommendation>"
+            "<specific_actionable_recommendation_with_clear_steps>",
+            "<specific_actionable_recommendation_with_clear_steps>",
+            "<specific_actionable_recommendation_with_clear_steps>",
+            "<specific_actionable_recommendation_with_clear_steps>",
+            "<specific_actionable_recommendation_with_clear_steps>"
         ]
     }}
 
-    CRITICAL INSTRUCTIONS:
-    - Be extremely thorough and specific in your analysis
-    - Focus on actionable, concrete feedback
-    - Consider industry standards and current job market trends
-    - Identify specific keywords that would improve ATS ranking
-    - Provide realistic scores based on actual ATS performance expectations
-    - Ensure all JSON values are properly formatted strings or integers
-    - Do not include any text outside the JSON response
+    CRITICAL REQUIREMENTS:
+    - Extract keywords dynamically from the provided job description when available
+    - Provide job-agnostic analysis when no job description is given
+    - Focus on measurable, actionable feedback
+    - Ensure all keywords are relevant to the resume content and target role
+    - Score realistically based on actual ATS performance standards
+    - Provide specific, implementable recommendations
+    - Maintain valid JSON format without any additional text
     """
 
     # Try SDK first, then direct API
@@ -264,68 +271,87 @@ async def analyze_resume_with_groq(resume_text: str, job_description: str = "") 
 def get_fallback_analysis(resume_text: str) -> dict:
     """Provide comprehensive analysis when Groq API is not available"""
     
-    # Enhanced keyword analysis with industry-specific terms
-    technical_keywords = ["programming", "development", "software", "coding", "algorithm", "database", "framework", "api", "cloud", "devops", "ci/cd", "agile", "scrum"]
-    business_keywords = ["management", "leadership", "strategy", "analysis", "optimization", "project", "team", "collaboration", "communication", "planning"]
-    soft_skills = ["problem-solving", "critical thinking", "creativity", "adaptability", "time management", "attention to detail", "multitasking"]
-    
-    all_keywords = technical_keywords + business_keywords + soft_skills
-    present_keywords = []
-    missing_keywords = []
-    
+    # Dynamic keyword extraction from resume content
     resume_lower = resume_text.lower()
     
-    for keyword in all_keywords:
-        if keyword.lower() in resume_lower or any(variant in resume_lower for variant in [keyword.replace("-", " "), keyword.replace(" ", "-")]):
-            present_keywords.append(keyword)
-        else:
-            missing_keywords.append(keyword)
+    # Extract potential keywords from the resume itself (nouns, technical terms, skills)
+    import re
+    
+    # Find words that appear to be skills or important terms (capitalized words, technical terms)
+    potential_keywords = []
+    
+    # Look for skill-related sections
+    skills_section = re.search(r'(skills?|technical|competencies|expertise|proficienc)(.*?)(?=\n[A-Z]|\n\n|$)', resume_text, re.IGNORECASE | re.DOTALL)
+    if skills_section:
+        skills_text = skills_section.group(2)
+        # Extract comma-separated skills or bulleted skills
+        skills_matches = re.findall(r'[A-Za-z][A-Za-z\s\.\+#-]+(?=[,\n•\-\*]|$)', skills_text)
+        potential_keywords.extend([skill.strip() for skill in skills_matches if len(skill.strip()) > 2])
+    
+    # Find technical terms and proper nouns (likely to be technologies, companies, etc.)
+    technical_terms = re.findall(r'\b[A-Z][a-z]*[A-Z][A-Za-z]*\b|\b[A-Z]{2,}\b|[A-Za-z]+\+\+?|\b\w*[Tt]ech\w*\b', resume_text)
+    potential_keywords.extend(technical_terms)
+    
+    # Find action verbs and power words commonly used in resumes
+    action_verbs_found = re.findall(r'\b(developed?|created?|managed?|led|implemented?|designed?|built|improved?|increased?|reduced?|achieved?|delivered?|coordinated?|supervised?|executed?|optimized?|streamlined?|collaborated?|facilitated?|initiated?|established?)\b', resume_lower)
+    
+    # Clean and deduplicate keywords
+    present_keywords = list(set([kw.strip() for kw in potential_keywords if len(kw.strip()) > 2 and len(kw.strip()) < 25]))[:10]
+    action_words = list(set(action_verbs_found))[:5]
+    
+    # Combine for a comprehensive keyword list
+    all_found_keywords = present_keywords + action_words
     
     # Advanced content analysis
     word_count = len(resume_text.split())
     sentence_count = len([s for s in resume_text.split('.') if s.strip()])
+    paragraph_count = len([p for p in resume_text.split('\n\n') if p.strip()])
     
-    # Check for key sections
+    # Check for key sections and content quality indicators
     has_contact = any(indicator in resume_lower for indicator in ["email", "phone", "@", ".com", "linkedin", "github"])
     has_experience = any(indicator in resume_lower for indicator in ["experience", "work", "job", "position", "role", "employment"])
     has_education = any(indicator in resume_lower for indicator in ["education", "degree", "university", "college", "bachelor", "master", "phd"])
     has_skills = any(indicator in resume_lower for indicator in ["skills", "technical", "programming", "software", "competencies", "expertise"])
-    has_achievements = any(indicator in resume_lower for indicator in ["achieved", "improved", "increased", "reduced", "led", "managed", "developed", "created"])
-    has_quantified_results = bool(re.search(r'\d+%|\$\d+|\d+\+|[0-9,]+\s*(users|customers|projects|team|million|thousand)', resume_lower))
+    has_achievements = len(action_verbs_found) > 3
+    has_quantified_results = bool(re.search(r'\d+%|\$\d+|\d+\+|[0-9,]+\s*(users|customers|projects|team|million|thousand|years?|months?)', resume_lower))
+    has_dates = bool(re.search(r'\b\d{4}\b|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)', resume_lower))
     
     # Formatting analysis
-    has_proper_sections = len(re.findall(r'\n[A-Z][A-Z\s]{2,20}\n', resume_text)) >= 3
-    has_bullet_points = '•' in resume_text or resume_text.count('\n- ') > 3 or resume_text.count('\n* ') > 3
-    consistent_formatting = not bool(re.search(r'[a-z]\s+[A-Z][a-z]', resume_text))  # Mixed case inconsistencies
+    has_proper_sections = len(re.findall(r'\n\s*[A-Z][A-Z\s]{2,20}:?\s*\n', resume_text)) >= 3
+    has_bullet_points = resume_text.count('•') > 2 or resume_text.count('\n-') > 3 or resume_text.count('\n*') > 3
+    consistent_formatting = len(re.findall(r'\n[A-Z][a-z]+:', resume_text)) >= 2
     
     # Calculate sophisticated scores
     base_score = 45
     
     # Content scoring (40 points max)
-    if word_count > 150: base_score += 5
-    if word_count > 300: base_score += 5
-    if word_count > 500: base_score += 5
+    if word_count > 150: base_score += 4
+    if word_count > 300: base_score += 4
+    if word_count > 500: base_score += 4
     if has_contact: base_score += 8
-    if has_experience: base_score += 12
+    if has_experience: base_score += 10
     if has_education: base_score += 6
     if has_skills: base_score += 8
-    if has_achievements: base_score += 10
-    if has_quantified_results: base_score += 15
+    if has_achievements: base_score += 8
+    if has_quantified_results: base_score += 12
+    if has_dates: base_score += 4
+    if paragraph_count > 5: base_score += 3
     
-    # Keyword scoring
-    keyword_density = len(present_keywords) / len(all_keywords)
-    keyword_score = min(100, keyword_density * 100 + 20)
+    # Keyword scoring based on content richness
+    keyword_density = min(len(all_found_keywords) / max(10, word_count/50), 1.0)  # Dynamic based on content length
+    keyword_score = min(100, keyword_density * 100 + 30)
     
     # Formatting scoring
-    formatting_score = 60
-    if has_proper_sections: formatting_score += 15
+    formatting_score = 55
+    if has_proper_sections: formatting_score += 20
     if has_bullet_points: formatting_score += 15
     if consistent_formatting: formatting_score += 10
     
     # Content quality scoring
-    content_score = base_score
+    content_score = base_score + 5
     if sentence_count > 10: content_score += 5
-    if len(present_keywords) > 10: content_score += 10
+    if len(all_found_keywords) > 8: content_score += 8
+    if has_quantified_results: content_score += 10
     
     # Final ATS score calculation
     final_score = min(100, int((base_score * 0.4) + (keyword_score * 0.3) + (formatting_score * 0.2) + (content_score * 0.1)))
@@ -333,52 +359,70 @@ def get_fallback_analysis(resume_text: str) -> dict:
     # Generate dynamic feedback based on analysis
     strengths = []
     if has_quantified_results:
-        strengths.append("Contains quantified achievements that demonstrate impact")
-    if len(present_keywords) > 15:
-        strengths.append("Rich keyword density shows relevant experience")
+        strengths.append("Contains quantified achievements that demonstrate measurable impact")
+    if len(all_found_keywords) > 8:
+        strengths.append("Rich content with relevant professional terminology")
     if has_proper_sections:
-        strengths.append("Well-structured with clear section organization")
+        strengths.append("Well-organized structure with clear section divisions")
     if word_count > 400:
-        strengths.append("Comprehensive content provides detailed background")
+        strengths.append("Comprehensive content provides detailed professional background")
+    if has_achievements:
+        strengths.append("Uses strong action verbs to describe accomplishments")
     
-    # Fill remaining strength slots
-    default_strengths = [
-        "Professional file format is ATS-compatible",
-        "Resume successfully parsed and analyzed",
-        "Contains relevant industry terminology",
-        "Demonstrates career progression and growth"
+    # Fill remaining strength slots with dynamic analysis
+    additional_strengths = [
+        "Professional file format compatible with ATS systems",
+        "Contains essential contact information" if has_contact else "Resume format successfully processed",
+        "Demonstrates relevant work experience" if has_experience else "Content structure shows professional presentation",
+        "Educational background clearly presented" if has_education else "Clear information hierarchy maintained"
     ]
     while len(strengths) < 4:
-        strengths.append(default_strengths[len(strengths)])
+        for strength in additional_strengths:
+            if len(strengths) < 4 and strength not in strengths:
+                strengths.append(strength)
     
-    # Generate improvement areas
+    # Generate improvement areas based on what's missing
     improvements = []
     if not has_quantified_results:
         improvements.append("Add quantified achievements with specific numbers, percentages, or metrics")
-    if len(present_keywords) < 10:
-        improvements.append("Incorporate more industry-specific keywords and technical terminology")
+    if len(all_found_keywords) < 6:
+        improvements.append("Incorporate more industry-relevant keywords and technical terminology")
     if not has_proper_sections:
-        improvements.append("Improve section organization with clear headers (Experience, Education, Skills)")
-    if word_count < 300:
+        improvements.append("Improve document structure with clear section headers")
+    if word_count < 250:
         improvements.append("Expand content to provide more comprehensive career details")
+    if not has_achievements:
+        improvements.append("Use stronger action verbs to highlight accomplishments")
     
-    # Fill remaining improvement slots
-    default_improvements = [
-        "Optimize keyword density for better ATS matching",
-        "Enhance formatting consistency throughout the document",
-        "Strengthen action verbs and power words usage",
-        "Improve alignment with current industry standards"
+    # Fill remaining improvement slots with general best practices
+    general_improvements = [
+        "Tailor keyword usage to match specific job requirements",
+        "Ensure consistent formatting throughout the document",
+        "Optimize content length for your experience level",
+        "Align skills section with target job requirements",
+        "Review for ATS-friendly formatting guidelines"
     ]
     while len(improvements) < 4:
-        improvements.append(default_improvements[len(improvements)])
+        for improvement in general_improvements:
+            if len(improvements) < 4 and improvement not in improvements:
+                improvements.append(improvement)
     
-    # Generate recommendations
+    # Generate recommendations that are always relevant
     recommendations = [
-        "Use industry-specific keywords that match your target job descriptions",
-        "Quantify all achievements with specific numbers, percentages, or dollar amounts",
-        "Ensure consistent formatting with proper bullet points and section headers",
-        "Tailor your resume content to match the specific job requirements",
-        "Include relevant certifications and technical skills prominently"
+        "Research and include keywords from your target job descriptions",
+        "Quantify your achievements with specific numbers and results",
+        "Ensure consistent formatting with clear section headers and bullet points",
+        "Tailor your resume content to match each job application",
+        "Use a standard, ATS-friendly resume format without complex graphics"
+    ]
+    
+    # Generate missing keywords as general categories rather than specific terms
+    missing_keyword_categories = [
+        "industry-specific terms",
+        "technical skills",
+        "soft skills",
+        "certifications",
+        "methodologies"
     ]
     
     return {
@@ -387,8 +431,8 @@ def get_fallback_analysis(resume_text: str) -> dict:
         "strengths": strengths,
         "areas_for_improvement": improvements,
         "keyword_analysis": {
-            "missing_keywords": missing_keywords[:5],
-            "present_keywords": present_keywords[:10] if present_keywords else ["experience", "skills", "work"],
+            "missing_keywords": missing_keyword_categories,  # Generic categories instead of specific terms
+            "present_keywords": all_found_keywords if all_found_keywords else ["professional terms found in content"],
             "keyword_score": int(keyword_score)
         },
         "formatting_score": min(100, formatting_score),
