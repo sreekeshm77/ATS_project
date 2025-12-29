@@ -3,14 +3,22 @@ from fastapi import FastAPI, File, UploadFile, Request, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from groq import Groq
 import PyPDF2
 import docx
 import io
 import json
 import re
+import requests
 from typing import Optional
 from dotenv import load_dotenv
+
+# Try to import Groq, fallback to direct API calls if it fails
+try:
+    from groq import Groq
+    GROQ_SDK_AVAILABLE = True
+except ImportError:
+    GROQ_SDK_AVAILABLE = False
+    print("Groq SDK not available, using direct API calls")
 
 # Load environment variables
 load_dotenv()
@@ -23,8 +31,50 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Templates
 templates = Jinja2Templates(directory="templates")
 
-# Initialize Groq client
-groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+# Initialize Groq client with proper error handling for serverless
+def get_groq_client():
+    """Initialize Groq client with proper error handling"""
+    if not GROQ_SDK_AVAILABLE:
+        return None
+        
+    try:
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            print("Warning: GROQ_API_KEY not found in environment variables")
+            return None
+        return Groq(api_key=api_key)
+    except Exception as e:
+        print(f"Error initializing Groq client: {e}")
+        return None
+
+def groq_direct_api(prompt, api_key):
+    """Direct API call to Groq without using the SDK"""
+    
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "model": "mixtral-8x7b-32768",
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.3,
+        "max_tokens": 2000
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=data, timeout=30)
+        response.raise_for_status()
+        result = response.json()
+        return result['choices'][0]['message']['content']
+    except Exception as e:
+        print(f"Direct API request failed: {e}")
+        return None
+
+# Global variable for Groq client
+groq_client = None
 
 def extract_text_from_pdf(file_content: bytes) -> str:
     """Extract text from PDF file"""
@@ -62,14 +112,18 @@ def extract_text_from_file(file_content: bytes, filename: str) -> str:
 async def analyze_resume_with_groq(resume_text: str, job_description: str = "") -> dict:
     """Analyze resume using Groq API and return ATS score and feedback"""
     
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        return get_fallback_analysis(resume_text)
+    
     prompt = f"""
     As an expert ATS (Applicant Tracking System) analyzer, please analyze the following resume and provide a comprehensive evaluation.
 
     Resume Content:
-    {resume_text}
+    {resume_text[:3000]}  
 
     Job Description (if provided):
-    {job_description}
+    {job_description[:1000]}
 
     Please provide your analysis in the following JSON format:
     {{
@@ -97,53 +151,100 @@ async def analyze_resume_with_groq(resume_text: str, job_description: str = "") 
     Please ensure the JSON is valid and complete.
     """
 
-    try:
-        response = groq_client.chat.completions.create(
-            model="mixtral-8x7b-32768",  # Free tier model
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.3,
-            max_tokens=2000
-        )
-        
-        content = response.choices[0].message.content
-        
-        # Extract JSON from response
-        json_match = re.search(r'\{.*\}', content, re.DOTALL)
-        if json_match:
-            json_str = json_match.group()
-            return json.loads(json_str)
-        else:
-            # Fallback if JSON extraction fails
-            return {
-                "ats_score": 70,
-                "overall_feedback": "Resume analysis completed. Please check the formatting and content.",
-                "strengths": ["Professional presentation", "Clear structure"],
-                "areas_for_improvement": ["Keyword optimization", "Quantified achievements"],
-                "keyword_analysis": {
-                    "missing_keywords": ["relevant skills", "industry terms"],
-                    "present_keywords": ["experience", "education"],
-                    "keyword_score": 60
-                },
-                "formatting_score": 75,
-                "content_quality_score": 70,
-                "recommendations": ["Add more keywords", "Quantify achievements", "Improve formatting"]
-            }
+    # Try SDK first, then direct API
+    content = None
     
-    except Exception as e:
-        return {
-            "ats_score": 0,
-            "overall_feedback": f"Error analyzing resume: {str(e)}",
-            "strengths": [],
-            "areas_for_improvement": ["Please try again"],
-            "keyword_analysis": {
-                "missing_keywords": [],
-                "present_keywords": [],
-                "keyword_score": 0
-            },
-            "formatting_score": 0,
-            "content_quality_score": 0,
-            "recommendations": ["Please try uploading the file again"]
-        }
+    if GROQ_SDK_AVAILABLE:
+        try:
+            global groq_client
+            if groq_client is None:
+                groq_client = get_groq_client()
+            
+            if groq_client is not None:
+                response = groq_client.chat.completions.create(
+                    model="mixtral-8x7b-32768",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.3,
+                    max_tokens=2000
+                )
+                content = response.choices[0].message.content
+        except Exception as e:
+            print(f"Groq SDK failed: {e}")
+            content = None
+    
+    # If SDK failed, try direct API
+    if content is None:
+        content = groq_direct_api(prompt, api_key)
+    
+    # Process the response
+    if content:
+        try:
+            # Extract JSON from response
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if json_match:
+                json_str = json_match.group()
+                result = json.loads(json_str)
+                return result
+        except Exception as e:
+            print(f"Error parsing AI response: {e}")
+    
+    # Fallback if everything fails
+    return get_fallback_analysis(resume_text)
+
+def get_fallback_analysis(resume_text: str) -> dict:
+    """Provide basic analysis when Groq API is not available"""
+    
+    # Basic keyword analysis
+    common_keywords = ["experience", "skills", "education", "work", "project", "management", "development", "team", "leadership", "communication"]
+    present_keywords = [keyword for keyword in common_keywords if keyword.lower() in resume_text.lower()]
+    missing_keywords = [keyword for keyword in common_keywords if keyword.lower() not in resume_text.lower()]
+    
+    # Basic scoring based on content length and structure
+    word_count = len(resume_text.split())
+    has_contact = any(indicator in resume_text.lower() for indicator in ["email", "phone", "@", ".com"])
+    has_experience = any(indicator in resume_text.lower() for indicator in ["experience", "work", "job", "position"])
+    has_education = any(indicator in resume_text.lower() for indicator in ["education", "degree", "university", "college"])
+    has_skills = any(indicator in resume_text.lower() for indicator in ["skills", "technical", "programming", "software"])
+    
+    # Calculate scores
+    base_score = 60
+    if word_count > 200: base_score += 10
+    if has_contact: base_score += 5
+    if has_experience: base_score += 10
+    if has_education: base_score += 5
+    if has_skills: base_score += 10
+    
+    keyword_score = min(100, (len(present_keywords) / len(common_keywords)) * 100)
+    formatting_score = min(100, base_score + 5)
+    content_score = min(100, base_score)
+    
+    return {
+        "ats_score": min(100, base_score),
+        "overall_feedback": "Resume analysis completed using basic evaluation. For advanced AI insights, please check your API configuration.",
+        "strengths": [
+            "Resume uploaded successfully",
+            "Content appears structured" if word_count > 100 else "File processed successfully",
+            "Contains relevant sections" if has_experience else "Basic information present"
+        ],
+        "areas_for_improvement": [
+            "Add more industry-specific keywords" if len(present_keywords) < 5 else "Enhance keyword density",
+            "Include quantified achievements",
+            "Ensure ATS-friendly formatting"
+        ],
+        "keyword_analysis": {
+            "missing_keywords": missing_keywords[:5],  # Show up to 5
+            "present_keywords": present_keywords[:10],  # Show up to 10
+            "keyword_score": int(keyword_score)
+        },
+        "formatting_score": int(formatting_score),
+        "content_quality_score": int(content_score),
+        "recommendations": [
+            "Add more specific technical skills",
+            "Include quantified achievements with numbers",
+            "Use standard resume sections (Experience, Education, Skills)",
+            "Optimize for applicant tracking systems"
+        ]
+    }
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
