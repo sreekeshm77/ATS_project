@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Resume Checker - AI Powered</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <h1>ATS Resume Checker</h1>
+                </div>
+                <p class="subtitle">AI-Powered Resume Analysis & ATS Score</p>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Get Your Resume ATS Score Instantly</h2>
+                <p>Upload your resume and get a comprehensive ATS analysis with actionable feedback to improve your job application success rate.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>ATS Score /100</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-search"></i>
+                        <span>Keyword Analysis</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Smart Recommendations</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="/static/resume-illustration.svg" alt="Resume Analysis" />
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <div class="upload-container">
+                <h3>Upload Your Resume</h3>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="file-upload-wrapper">
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop your resume here or <span class="browse-text">browse files</span></p>
+                            <p class="file-info">Supports PDF, DOCX, TXT files</p>
+                            <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.txt" required>
+                        </div>
+                        <div class="selected-file" id="selectedFile" style="display: none;">
+                            <i class="fas fa-file"></i>
+                            <span id="fileName"></span>
+                            <button type="button" id="removeFile">×</button>
+                        </div>
+                    </div>
+
+                    <div class="job-description-wrapper">
+                        <label for="jobDescription">Job Description (Optional)</label>
+                        <textarea 
+                            id="jobDescription" 
+                            name="job_description" 
+                            placeholder="Paste the job description here for more targeted analysis..."
+                            rows="4"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" class="analyze-btn">
+                        <i class="fas fa-brain"></i>
+                        Analyze Resume
+                    </button>
+                </form>
+
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing your resume with AI...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-container">
+                <h3>Analysis Results</h3>
+                
+                <div class="score-overview">
+                    <div class="main-score">
+                        <div class="score-circle">
+                            <span id="atsScore">0</span>
+                            <small>/100</small>
+                        </div>
+                        <h4>ATS Score</h4>
+                        <p id="overallFeedback">Your resume analysis results</p>
+                    </div>
+                    
+                    <div class="sub-scores">
+                        <div class="sub-score">
+                            <div class="score-bar">
+                                <div class="score-fill" id="keywordScore"></div>
+                            </div>
+                            <span>Keyword Match</span>
+                        </div>
+                        <div class="sub-score">
+                            <div class="score-bar">
+                                <div class="score-fill" id="formattingScore"></div>
+                            </div>
+                            <span>Formatting</span>
+                        </div>
+                        <div class="sub-score">
+                            <div class="score-bar">
+                                <div class="score-fill" id="contentScore"></div>
+                            </div>
+                            <span>Content Quality</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-details">
+                    <div class="detail-card strengths-card">
+                        <h4><i class="fas fa-check-circle"></i> Strengths</h4>
+                        <ul id="strengthsList"></ul>
+                    </div>
+
+                    <div class="detail-card improvements-card">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Areas for Improvement</h4>
+                        <ul id="improvementsList"></ul>
+                    </div>
+
+                    <div class="detail-card keywords-card">
+                        <h4><i class="fas fa-tags"></i> Keyword Analysis</h4>
+                        <div class="keywords-content">
+                            <div class="keyword-group">
+                                <h5>Present Keywords</h5>
+                                <div class="keyword-tags" id="presentKeywords"></div>
+                            </div>
+                            <div class="keyword-group">
+                                <h5>Missing Keywords</h5>
+                                <div class="keyword-tags missing" id="missingKeywords"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card recommendations-card">
+                        <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                        <ul id="recommendationsList"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sample Resumes Section -->
+        <section class="samples-section">
+            <div class="samples-container">
+                <h3>Sample Resume Formats</h3>
+                <p>Check out these ATS-friendly resume formats</p>
+                
+                <div class="sample-grid">
+                    <div class="sample-card">
+                        <img src="/static/resume-sample-1.png" alt="Professional Resume Sample" />
+                        <h4>Professional Format</h4>
+                        <p>Clean, ATS-friendly design</p>
+                    </div>
+                    <div class="sample-card">
+                        <img src="/static/resume-sample-2.png" alt="Modern Resume Sample" />
+                        <h4>Modern Format</h4>
+                        <p>Contemporary layout with keywords</p>
+                    </div>
+                    <div class="sample-card">
+                        <img src="/static/resume-sample-3.png" alt="Executive Resume Sample" />
+                        <h4>Executive Format</h4>
+                        <p>Senior-level resume template</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 ATS Resume Checker. Powered by AI for better job prospects.</p>
+                <div class="footer-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
