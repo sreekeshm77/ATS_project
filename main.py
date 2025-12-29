@@ -1,4 +1,4 @@
-from app import app
+from index import app
 
 # Main entrypoint for the application
 if __name__ == "__main__":
