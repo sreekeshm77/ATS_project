@@ -159,13 +159,16 @@ async def analyze_resume_with_groq(resume_text: str, job_description: str = "") 
        - Appropriate resume length for experience level
        - Overall professional tone and presentation
 
-    SCORING METHODOLOGY:
-    - 90-100: Exceptional - Top 5% of candidates, will likely pass all ATS filters and secure interviews
-    - 80-89: Strong - Top 15% of candidates, high probability of passing ATS screening
-    - 70-79: Good - Above average, needs minor optimizations to improve ranking
-    - 60-69: Fair - Average performance, requires targeted improvements for better results
-    - 50-59: Weak - Below average, needs significant revisions to be competitive
-    - Below 50: Poor - Major improvements needed, unlikely to pass initial ATS screening
+    STRICT SCORING METHODOLOGY:
+    - 95-100: Exceptional - Perfect ATS optimization, 99%+ interview probability (requires ALL: 15+ quantified achievements, 20+ relevant keywords, perfect formatting, 3+ years relevant experience)
+    - 85-94: Excellent - Outstanding candidate, 90%+ ATS pass rate (requires: 10+ quantified achievements, 15+ keywords, excellent formatting, clear progression)
+    - 75-84: Very Good - Strong candidate, 75%+ ATS pass rate (requires: 6+ quantified achievements, 12+ keywords, good formatting, relevant experience)
+    - 65-74: Good - Above average, 60% ATS pass rate (requires: 3+ quantified achievements, 8+ keywords, decent formatting)
+    - 55-64: Fair - Average performance, 40% ATS pass rate (requires: 1+ quantified achievement, 5+ keywords, basic formatting)
+    - 45-54: Below Average - Needs improvement, 25% ATS pass rate (missing key elements but has potential)
+    - 35-44: Weak - Significant issues, 15% ATS pass rate (major gaps in content or formatting)
+    - 25-34: Poor - Major problems, 5% ATS pass rate (fundamental issues throughout)
+    - Below 25: Critical - Complete overhaul needed, <1% ATS pass rate (fails basic requirements)
 
     INSTRUCTIONS FOR KEYWORD ANALYSIS:
     - If job description is provided, extract specific keywords from it and match against resume
@@ -218,14 +221,23 @@ async def analyze_resume_with_groq(resume_text: str, job_description: str = "") 
         ]
     }}
 
-    CRITICAL REQUIREMENTS:
+    CRITICAL REQUIREMENTS FOR SCORING:
     - Extract keywords dynamically from the provided job description when available
     - Provide job-agnostic analysis when no job description is given
-    - Focus on measurable, actionable feedback
+    - Use STRICT scoring criteria - scores above 85 require exceptional quality
+    - Focus on measurable, actionable feedback with specific examples
     - Ensure all keywords are relevant to the resume content and target role
-    - Score realistically based on actual ATS performance standards
-    - Provide specific, implementable recommendations
+    - Score realistically based on actual ATS performance standards and market competition
+    - Provide specific, implementable recommendations with clear success metrics
     - Maintain valid JSON format without any additional text
+
+    STRICT SCORING ENFORCEMENT:
+    - 95-100: Perfect resume, exceptional across all criteria, top 1% of candidates
+    - 85-94: Outstanding quality, minimal improvements needed, top 5% of candidates  
+    - 75-84: Strong performance, competitive candidate, top 15% of candidates
+    - 65-74: Good foundation, needs optimization, top 30% of candidates
+    - 55-64: Average performance, requires improvements, top 50% of candidates
+    - Below 55: Needs significant work to be competitive in job market
     """
 
     # Try SDK first, then direct API
@@ -269,7 +281,7 @@ async def analyze_resume_with_groq(resume_text: str, job_description: str = "") 
     return get_fallback_analysis(resume_text)
 
 def get_fallback_analysis(resume_text: str) -> dict:
-    """Provide comprehensive analysis when Groq API is not available"""
+    """Provide comprehensive analysis with strict scoring criteria when Groq API is not available"""
     
     # Dynamic keyword extraction from resume content
     resume_lower = resume_text.lower()
@@ -280,7 +292,7 @@ def get_fallback_analysis(resume_text: str) -> dict:
     # Find words that appear to be skills or important terms (capitalized words, technical terms)
     potential_keywords = []
     
-    # Look for skill-related sections
+    # Look for skill-related sections with more precise extraction
     skills_section = re.search(r'(skills?|technical|competencies|expertise|proficienc)(.*?)(?=\n[A-Z]|\n\n|$)', resume_text, re.IGNORECASE | re.DOTALL)
     if skills_section:
         skills_text = skills_section.group(2)
@@ -292,151 +304,242 @@ def get_fallback_analysis(resume_text: str) -> dict:
     technical_terms = re.findall(r'\b[A-Z][a-z]*[A-Z][A-Za-z]*\b|\b[A-Z]{2,}\b|[A-Za-z]+\+\+?|\b\w*[Tt]ech\w*\b', resume_text)
     potential_keywords.extend(technical_terms)
     
-    # Find action verbs and power words commonly used in resumes
-    action_verbs_found = re.findall(r'\b(developed?|created?|managed?|led|implemented?|designed?|built|improved?|increased?|reduced?|achieved?|delivered?|coordinated?|supervised?|executed?|optimized?|streamlined?|collaborated?|facilitated?|initiated?|established?)\b', resume_lower)
+    # Expand action verbs list for more comprehensive detection
+    action_verbs_found = re.findall(r'\b(developed?|created?|managed?|led|implemented?|designed?|built|improved?|increased?|reduced?|achieved?|delivered?|coordinated?|supervised?|executed?|optimized?|streamlined?|collaborated?|facilitated?|initiated?|established?|launched|transformed|accelerated|exceeded|generated|pioneered|mentored?|trained|negotiated?|resolved|analyzed|researched|strategized|innovated?|automated|scaled|modernized)\b', resume_lower)
     
-    # Clean and deduplicate keywords
-    present_keywords = list(set([kw.strip() for kw in potential_keywords if len(kw.strip()) > 2 and len(kw.strip()) < 25]))[:10]
-    action_words = list(set(action_verbs_found))[:5]
+    # Clean and deduplicate keywords with stricter criteria
+    present_keywords = list(set([kw.strip() for kw in potential_keywords if len(kw.strip()) > 2 and len(kw.strip()) < 30]))[:15]
+    action_words = list(set(action_verbs_found))[:10]
     
     # Combine for a comprehensive keyword list
     all_found_keywords = present_keywords + action_words
     
-    # Advanced content analysis
+    # STRICT CONTENT ANALYSIS WITH PRECISE SCORING
     word_count = len(resume_text.split())
     sentence_count = len([s for s in resume_text.split('.') if s.strip()])
     paragraph_count = len([p for p in resume_text.split('\n\n') if p.strip()])
     
-    # Check for key sections and content quality indicators
+    # Enhanced content quality indicators with strict requirements
     has_contact = any(indicator in resume_lower for indicator in ["email", "phone", "@", ".com", "linkedin", "github"])
     has_experience = any(indicator in resume_lower for indicator in ["experience", "work", "job", "position", "role", "employment"])
     has_education = any(indicator in resume_lower for indicator in ["education", "degree", "university", "college", "bachelor", "master", "phd"])
     has_skills = any(indicator in resume_lower for indicator in ["skills", "technical", "programming", "software", "competencies", "expertise"])
-    has_achievements = len(action_verbs_found) > 3
-    has_quantified_results = bool(re.search(r'\d+%|\$\d+|\d+\+|[0-9,]+\s*(users|customers|projects|team|million|thousand|years?|months?)', resume_lower))
-    has_dates = bool(re.search(r'\b\d{4}\b|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)', resume_lower))
+    has_achievements = len(action_verbs_found) > 5  # Increased threshold
     
-    # Formatting analysis
-    has_proper_sections = len(re.findall(r'\n\s*[A-Z][A-Z\s]{2,20}:?\s*\n', resume_text)) >= 3
-    has_bullet_points = resume_text.count('•') > 2 or resume_text.count('\n-') > 3 or resume_text.count('\n*') > 3
-    consistent_formatting = len(re.findall(r'\n[A-Z][a-z]+:', resume_text)) >= 2
+    # STRICT QUANTIFIED RESULTS DETECTION
+    quantified_results = re.findall(r'\d+%|\$\d+|\d+\+|[0-9,]+\s*(users|customers|projects|team|million|thousand|years?|months?|increase|decrease|growth|reduction|improvement|efficiency)', resume_lower)
+    quantified_count = len(quantified_results)
+    has_quantified_results = quantified_count >= 3  # Require multiple quantified achievements
     
-    # Calculate sophisticated scores
-    base_score = 45
+    # ENHANCED DATE AND CHRONOLOGY DETECTION
+    date_patterns = re.findall(r'\b\d{4}\b|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\s+\d{4}|(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}', resume_lower)
+    has_proper_dates = len(date_patterns) >= 4  # Require multiple dates
     
-    # Content scoring (40 points max)
-    if word_count > 150: base_score += 4
-    if word_count > 300: base_score += 4
-    if word_count > 500: base_score += 4
-    if has_contact: base_score += 8
-    if has_experience: base_score += 10
-    if has_education: base_score += 6
-    if has_skills: base_score += 8
-    if has_achievements: base_score += 8
-    if has_quantified_results: base_score += 12
-    if has_dates: base_score += 4
-    if paragraph_count > 5: base_score += 3
+    # PROFESSIONAL CERTIFICATIONS AND CREDENTIALS
+    has_certifications = bool(re.search(r'\b(certified?|certification|license|credential|accredited|diploma)\b', resume_lower))
     
-    # Keyword scoring based on content richness
-    keyword_density = min(len(all_found_keywords) / max(10, word_count/50), 1.0)  # Dynamic based on content length
-    keyword_score = min(100, keyword_density * 100 + 30)
+    # LEADERSHIP AND MANAGEMENT INDICATORS
+    leadership_terms = re.findall(r'\b(led|managed?|supervised|directed|coordinated|oversaw|mentored|guided|trained|developed team|team lead|project manager|senior|principal|head of|director|vp|vice president)\b', resume_lower)
+    has_leadership = len(leadership_terms) >= 3
     
-    # Formatting scoring
-    formatting_score = 55
-    if has_proper_sections: formatting_score += 20
-    if has_bullet_points: formatting_score += 15
-    if consistent_formatting: formatting_score += 10
+    # ADVANCED FORMATTING ANALYSIS WITH STRICT CRITERIA
+    has_proper_sections = len(re.findall(r'\n\s*[A-Z][A-Z\s]{2,20}:?\s*\n', resume_text)) >= 4  # Require more sections
+    has_bullet_points = resume_text.count('•') > 5 or resume_text.count('\n-') > 8 or resume_text.count('\n*') > 8  # Higher requirements
+    consistent_formatting = len(re.findall(r'\n[A-Z][a-z]+:', resume_text)) >= 3
+    proper_length = 200 <= word_count <= 800  # Strict word count range
     
-    # Content quality scoring
-    content_score = base_score + 5
-    if sentence_count > 10: content_score += 5
-    if len(all_found_keywords) > 8: content_score += 8
-    if has_quantified_results: content_score += 10
+    # STRICT SCORING ALGORITHM - START WITH 0 AND EARN POINTS
+    score = 0
     
-    # Final ATS score calculation
-    final_score = min(100, int((base_score * 0.4) + (keyword_score * 0.3) + (formatting_score * 0.2) + (content_score * 0.1)))
+    # CORE REQUIREMENTS (Maximum 40 points) - Must have these basics
+    if has_contact: score += 8
+    if has_experience: score += 12
+    if has_education: score += 8
+    if has_skills: score += 12
     
-    # Generate dynamic feedback based on analysis
+    # CONTENT QUALITY (Maximum 35 points)
+    if word_count > 200: score += 5
+    if word_count > 400: score += 5
+    if proper_length: score += 10  # Bonus for optimal length
+    if quantified_count >= 1: score += 5
+    if quantified_count >= 3: score += 10  # Significant bonus for multiple metrics
+    if quantified_count >= 6: score += 5   # Extra bonus for exceptional metrics
+    
+    # PROFESSIONAL PRESENTATION (Maximum 25 points)
+    if has_achievements: score += 8
+    if has_leadership: score += 7
+    if has_certifications: score += 5
+    if has_proper_dates: score += 5
+    
+    # KEYWORD OPTIMIZATION - STRICT CALCULATION
+    keyword_count = len(all_found_keywords)
+    if keyword_count >= 5: score += 3
+    if keyword_count >= 8: score += 4
+    if keyword_count >= 12: score += 6
+    if keyword_count >= 15: score += 7
+    if keyword_count >= 20: score += 5  # Excellence bonus
+    
+    # FORMATTING EXCELLENCE (Maximum deduction/bonus approach)
+    formatting_bonus = 0
+    if has_proper_sections: formatting_bonus += 8
+    if has_bullet_points: formatting_bonus += 7
+    if consistent_formatting: formatting_bonus += 5
+    score += formatting_bonus
+    
+    # PENALTY SYSTEM FOR CRITICAL ISSUES
+    if word_count < 150: score -= 15  # Too short penalty
+    if word_count > 1000: score -= 10  # Too long penalty
+    if not has_achievements: score -= 8  # Lack of action verbs
+    if quantified_count == 0: score -= 12  # No quantified results penalty
+    
+    # Ensure score is within 0-100 range
+    score = max(0, min(100, score))
+    
+    # COMPONENT SCORES WITH STRICT CRITERIA
+    keyword_score = min(100, (keyword_count / 15) * 100)  # Based on 15 keywords as excellent
+    
+    formatting_score = 20  # Start low
+    if has_proper_sections: formatting_score += 25
+    if has_bullet_points: formatting_score += 25
+    if consistent_formatting: formatting_score += 20
+    if proper_length: formatting_score += 10
+    
+    content_score = 15  # Start low
+    if has_achievements: content_score += 15
+    if has_quantified_results: content_score += 25
+    if has_leadership: content_score += 15
+    if has_certifications: content_score += 10
+    if has_proper_dates: content_score += 10
+    if sentence_count > 15: content_score += 10
+    
+    # Ensure all component scores are within range
+    keyword_score = max(0, min(100, int(keyword_score)))
+    formatting_score = max(0, min(100, int(formatting_score)))
+    content_score = max(0, min(100, int(content_score)))
+    
+    # STRICT GRADE BOUNDARIES
+    if score >= 95:
+        grade = "Exceptional"
+        feedback_level = "outstanding"
+    elif score >= 85:
+        grade = "Excellent"
+        feedback_level = "excellent"
+    elif score >= 75:
+        grade = "Very Good"
+        feedback_level = "strong"
+    elif score >= 65:
+        grade = "Good"
+        feedback_level = "good"
+    elif score >= 55:
+        grade = "Fair"
+        feedback_level = "moderate"
+    elif score >= 45:
+        grade = "Below Average"
+        feedback_level = "below average"
+    elif score >= 35:
+        grade = "Weak"
+        feedback_level = "weak"
+    elif score >= 25:
+        grade = "Poor"
+        feedback_level = "poor"
+    else:
+        grade = "Critical"
+        feedback_level = "critical"
+    
+    # Generate dynamic feedback based on strict analysis
     strengths = []
-    if has_quantified_results:
-        strengths.append("Contains quantified achievements that demonstrate measurable impact")
-    if len(all_found_keywords) > 8:
-        strengths.append("Rich content with relevant professional terminology")
-    if has_proper_sections:
-        strengths.append("Well-organized structure with clear section divisions")
-    if word_count > 400:
-        strengths.append("Comprehensive content provides detailed professional background")
-    if has_achievements:
-        strengths.append("Uses strong action verbs to describe accomplishments")
+    if quantified_count >= 3:
+        strengths.append("Contains multiple quantified achievements demonstrating measurable impact")
+    elif quantified_count >= 1:
+        strengths.append("Includes some quantified achievements showing results")
     
-    # Fill remaining strength slots with dynamic analysis
+    if len(all_found_keywords) >= 12:
+        strengths.append("Rich keyword content with comprehensive professional terminology")
+    elif len(all_found_keywords) >= 8:
+        strengths.append("Good keyword usage with relevant professional terms")
+    
+    if has_proper_sections and has_bullet_points:
+        strengths.append("Excellent ATS-friendly formatting with clear structure")
+    elif has_proper_sections or has_bullet_points:
+        strengths.append("Well-organized structure with clear sections")
+    
+    if has_leadership:
+        strengths.append("Demonstrates leadership experience and management capabilities")
+    elif has_achievements:
+        strengths.append("Uses strong action verbs to describe professional accomplishments")
+    
+    if has_certifications:
+        strengths.append("Professional certifications enhance credibility and expertise")
+    
+    # Ensure we have at least 4 strengths
     additional_strengths = [
         "Professional file format compatible with ATS systems",
-        "Contains essential contact information" if has_contact else "Resume format successfully processed",
-        "Demonstrates relevant work experience" if has_experience else "Content structure shows professional presentation",
-        "Educational background clearly presented" if has_education else "Clear information hierarchy maintained"
+        "Contains comprehensive contact information" if has_contact else "Resume format successfully processed",
+        "Demonstrates relevant work experience progression" if has_experience else "Content structure shows professional presentation",
+        "Educational background clearly documented" if has_education else "Clear information hierarchy maintained"
     ]
     while len(strengths) < 4:
         for strength in additional_strengths:
             if len(strengths) < 4 and strength not in strengths:
                 strengths.append(strength)
     
-    # Generate improvement areas based on what's missing
+    # Generate improvement areas based on strict requirements
     improvements = []
-    if not has_quantified_results:
-        improvements.append("Add quantified achievements with specific numbers, percentages, or metrics")
-    if len(all_found_keywords) < 6:
-        improvements.append("Incorporate more industry-relevant keywords and technical terminology")
-    if not has_proper_sections:
-        improvements.append("Improve document structure with clear section headers")
-    if word_count < 250:
-        improvements.append("Expand content to provide more comprehensive career details")
-    if not has_achievements:
-        improvements.append("Use stronger action verbs to highlight accomplishments")
+    if quantified_count < 3:
+        improvements.append("Add more quantified achievements with specific metrics, percentages, and measurable results")
+    if len(all_found_keywords) < 12:
+        improvements.append("Incorporate additional industry-relevant keywords and technical terminology")
+    if not (has_proper_sections and has_bullet_points):
+        improvements.append("Improve document formatting with consistent sections and bullet points")
+    if not has_leadership and len(leadership_terms) < 2:
+        improvements.append("Highlight leadership experience and management responsibilities more prominently")
+    if not has_certifications:
+        improvements.append("Consider adding relevant certifications or professional credentials")
+    if word_count < 300:
+        improvements.append("Expand content to provide more comprehensive career details and achievements")
     
-    # Fill remaining improvement slots with general best practices
+    # Fill remaining improvement slots
     general_improvements = [
-        "Tailor keyword usage to match specific job requirements",
-        "Ensure consistent formatting throughout the document",
-        "Optimize content length for your experience level",
-        "Align skills section with target job requirements",
-        "Review for ATS-friendly formatting guidelines"
+        "Optimize keyword density for better ATS ranking",
+        "Ensure chronological consistency throughout work history",
+        "Align skills section more precisely with target job requirements",
+        "Enhance professional summary with stronger value proposition"
     ]
     while len(improvements) < 4:
         for improvement in general_improvements:
             if len(improvements) < 4 and improvement not in improvements:
                 improvements.append(improvement)
     
-    # Generate recommendations that are always relevant
+    # Generate strict recommendations
     recommendations = [
-        "Research and include keywords from your target job descriptions",
-        "Quantify your achievements with specific numbers and results",
-        "Ensure consistent formatting with clear section headers and bullet points",
-        "Tailor your resume content to match each job application",
-        "Use a standard, ATS-friendly resume format without complex graphics"
+        "Research target job descriptions and incorporate specific required keywords",
+        "Quantify ALL achievements with numbers, percentages, dollar amounts, or timeframes",
+        "Use consistent ATS-friendly formatting with clear sections and bullet points",
+        "Tailor resume content to match each specific job application",
+        "Ensure optimal length (300-600 words) with rich, relevant content"
     ]
     
-    # Generate missing keywords as general categories rather than specific terms
+    # Generate missing keywords as specific actionable categories
     missing_keyword_categories = [
-        "industry-specific terms",
-        "technical skills",
-        "soft skills",
-        "certifications",
-        "methodologies"
+        "role-specific technical skills",
+        "industry certifications",
+        "management/leadership terms",
+        "quantitative metrics",
+        "software/tools proficiency"
     ]
-    
+
     return {
-        "ats_score": final_score,
-        "overall_feedback": f"Your resume shows {'strong' if final_score > 75 else 'good' if final_score > 60 else 'moderate'} ATS compatibility with a score of {final_score}/100. {'Focus on keyword optimization and quantified achievements to reach the next level.' if final_score < 80 else 'Great foundation - minor optimizations will significantly improve your ranking.'}",
+        "ats_score": score,
+        "overall_feedback": f"Your resume receives a {grade} rating with a strict ATS score of {score}/100. {feedback_level.title()} performance indicates {'excellent ATS compatibility with high interview probability' if score >= 85 else 'strong foundation requiring targeted optimizations' if score >= 65 else 'significant improvements needed for competitive ranking'}. Focus on {'maintaining excellence' if score >= 85 else 'keyword optimization and quantified achievements' if score >= 65 else 'comprehensive content enhancement and formatting improvements'}.",
         "strengths": strengths,
         "areas_for_improvement": improvements,
         "keyword_analysis": {
-            "missing_keywords": missing_keyword_categories,  # Generic categories instead of specific terms
-            "present_keywords": all_found_keywords if all_found_keywords else ["professional terms found in content"],
-            "keyword_score": int(keyword_score)
+            "missing_keywords": missing_keyword_categories,
+            "present_keywords": all_found_keywords if all_found_keywords else ["basic professional terms found"],
+            "keyword_score": keyword_score
         },
-        "formatting_score": min(100, formatting_score),
-        "content_quality_score": min(100, content_score),
+        "formatting_score": formatting_score,
+        "content_quality_score": content_score,
         "recommendations": recommendations
     }
 
