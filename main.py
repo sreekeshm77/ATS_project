@@ -1,3 +1,9 @@
+"""
+ATS Pro Resume Analyzer
+By Sreekesh M
+AI-powered ATS score checker with hybrid analysis
+"""
+
 import os
 from fastapi import FastAPI, File, UploadFile, Request, Form
 from fastapi.responses import HTMLResponse, JSONResponse
