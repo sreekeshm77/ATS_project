@@ -191,7 +191,7 @@ class DeterministicATSAnalyzer:
         final_score = self._calculate_final_score({
             'contact': (contact_score, 0.08),
             'structure': (structure_score, 0.12),
-            'keywords': (keyword_analysis['score'], 0.20),
+            'keywords': (keyword_analysis['keyword_score'], 0.20),
             'achievements': (achievement_score, 0.18),
             'verbs': (verb_score, 0.08),
             'formatting': (formatting_score, 0.12),
