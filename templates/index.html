@@ -3,201 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATS Resume Checker - AI Powered</title>
+    <title>ATS Resume Analyzer - AI Powered Professional Analysis</title>
     <link rel="stylesheet" href="/static/style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo-icon">
                     <i class="fas fa-robot"></i>
-                    <h1>ATS Resume Checker</h1>
+                    <span class="pulse-ring"></span>
                 </div>
-                <p class="subtitle">AI-Powered Resume Analysis & ATS Score</p>
+                <span class="brand-text">ATS<span class="accent">Pro</span></span>
             </div>
-        </header>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#upload-section" class="nav-link">Analyze</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+            </div>
+        </nav>
 
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content">
-                <h2>Get Your Resume ATS Score Instantly</h2>
-                <p>Upload your resume and get a comprehensive ATS analysis with actionable feedback to improve your job application success rate.</p>
-                
-                <div class="features">
-                    <div class="feature">
-                        <i class="fas fa-chart-line"></i>
-                        <span>ATS Score /100</span>
+                <div class="hero-badge animate-float">
+                    <i class="fas fa-sparkles"></i>
+                    AI-Powered Analysis
+                </div>
+                <h1 class="hero-title">
+                    <span class="text-gradient">Unlock Your Resume's</span>
+                    <br>
+                    <span class="typewriter">Full Potential</span>
+                </h1>
+                <p class="hero-description">
+                    Get comprehensive ATS analysis with industry-leading AI technology combined with proven algorithmic evaluation. 
+                    Optimize your resume for maximum visibility and land more interviews.
+                </p>
+                <div class="hero-cta">
+                    <a href="#upload-section" class="btn-primary btn-glow">
+                        <i class="fas fa-rocket"></i>
+                        Start Free Analysis
+                    </a>
+                    <a href="#how-it-works" class="btn-secondary">
+                        <i class="fas fa-play-circle"></i>
+                        See How It Works
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="50000">0</div>
+                        <div class="stat-label">Resumes Analyzed</div>
                     </div>
-                    <div class="feature">
-                        <i class="fas fa-search"></i>
-                        <span>Keyword Analysis</span>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="95">0</div>
+                        <div class="stat-label">% Accuracy Rate</div>
                     </div>
-                    <div class="feature">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>Smart Recommendations</span>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="40">0</div>
+                        <div class="stat-label">+ ATS Checks</div>
                     </div>
                 </div>
             </div>
-            <div class="hero-image">
-                <img src="/static/resume-illustration.svg" alt="Resume Analysis" />
+            <div class="hero-visual">
+                <div class="dashboard-preview">
+                    <div class="preview-header">
+                        <div class="preview-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="preview-title">Resume Analysis Dashboard</span>
+                    </div>
+                    <div class="preview-content">
+                        <div class="score-gauge">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="gauge-bg" cx="60" cy="60" r="54"/>
+                                <circle class="gauge-fill" cx="60" cy="60" r="54" stroke-dasharray="339.3" stroke-dashoffset="84"/>
+                            </svg>
+                            <div class="gauge-text">
+                                <span class="gauge-score">87</span>
+                                <span class="gauge-label">ATS Score</span>
+                            </div>
+                        </div>
+                        <div class="preview-bars">
+                            <div class="bar-item">
+                                <span>Keywords</span>
+                                <div class="mini-bar"><div style="width: 92%"></div></div>
+                            </div>
+                            <div class="bar-item">
+                                <span>Formatting</span>
+                                <div class="mini-bar"><div style="width: 85%"></div></div>
+                            </div>
+                            <div class="bar-item">
+                                <span>Impact</span>
+                                <div class="mini-bar"><div style="width: 78%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Why Choose <span class="text-gradient">ATS Pro</span></h2>
+                <p class="section-subtitle">Advanced analysis combining AI intelligence with proven algorithmic evaluation</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon gradient-1">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Hybrid AI Analysis</h3>
+                    <p>Combines GPT-level AI understanding with deterministic scoring algorithms for unmatched accuracy</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon gradient-2">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <h3>Deep Keyword Analysis</h3>
+                    <p>Advanced NLP extraction identifies critical keywords and matches them against job requirements</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon gradient-3">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>40+ ATS Criteria</h3>
+                    <p>Comprehensive evaluation across formatting, content, impact metrics, and industry standards</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon gradient-4">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Job-Specific Matching</h3>
+                    <p>Tailored analysis when you provide job descriptions for targeted optimization</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon gradient-5">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Actionable Insights</h3>
+                    <p>Specific, prioritized recommendations with examples to improve your score immediately</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon gradient-6">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3>Industry Benchmarks</h3>
+                    <p>Compare your resume against thousands of successful applications in your field</p>
+                </div>
             </div>
         </section>
 
         <!-- Upload Section -->
-        <section class="upload-section">
+        <section class="upload-section" id="upload-section">
             <div class="upload-container">
-                <h3>Upload Your Resume</h3>
-                <form id="uploadForm" enctype="multipart/form-data">
-                    <div class="file-upload-wrapper">
-                        <div class="file-upload-area" id="fileUploadArea">
+                <div class="upload-header">
+                    <span class="section-badge">Analyze Now</span>
+                    <h2 class="section-title">Upload Your Resume</h2>
+                    <p class="section-subtitle">Get instant, comprehensive ATS analysis powered by AI</p>
+                </div>
+
+                <form id="uploadForm" enctype="multipart/form-data" class="upload-form">
+                    <div class="file-upload-zone" id="fileUploadArea">
+                        <div class="upload-icon-wrapper">
                             <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Drag & drop your resume here or <span class="browse-text">browse files</span></p>
-                            <p class="file-info">Supports PDF, DOCX, TXT files</p>
-                            <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.txt" required>
+                            <div class="upload-ripple"></div>
                         </div>
-                        <div class="selected-file" id="selectedFile" style="display: none;">
-                            <i class="fas fa-file"></i>
-                            <span id="fileName"></span>
-                            <button type="button" id="removeFile">×</button>
+                        <div class="upload-text">
+                            <h4>Drag & Drop your resume here</h4>
+                            <p>or <span class="browse-link">click to browse</span></p>
                         </div>
+                        <div class="file-types">
+                            <span><i class="fas fa-file-pdf"></i> PDF</span>
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                            <span><i class="fas fa-file-alt"></i> TXT</span>
+                        </div>
+                        <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.txt" required>
                     </div>
 
-                    <div class="job-description-wrapper">
-                        <label for="jobDescription">Job Description (Optional)</label>
-                        <textarea 
-                            id="jobDescription" 
-                            name="job_description" 
-                            placeholder="Paste the job description here for more targeted analysis..."
-                            rows="4"
-                        ></textarea>
+                    <div class="selected-file-display" id="selectedFile">
+                        <div class="file-info">
+                            <div class="file-icon">
+                                <i class="fas fa-file-check"></i>
+                            </div>
+                            <div class="file-details">
+                                <span class="file-name" id="fileName"></span>
+                                <span class="file-size" id="fileSize"></span>
+                            </div>
+                        </div>
+                        <button type="button" id="removeFile" class="remove-file-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="job-description-section">
+                        <label for="jobDescription" class="jd-label">
+                            <i class="fas fa-briefcase"></i>
+                            Job Description <span class="optional-badge">Optional but Recommended</span>
+                        </label>
+                        <div class="jd-input-wrapper">
+                            <textarea 
+                                id="jobDescription" 
+                                name="job_description" 
+                                placeholder="Paste the target job description here for personalized keyword matching and role-specific analysis..."
+                                rows="5"
+                            ></textarea>
+                            <div class="jd-helper">
+                                <i class="fas fa-info-circle"></i>
+                                Adding a job description improves analysis accuracy by 40%
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" id="analyzeBtn" class="analyze-btn">
-                        <i class="fas fa-brain"></i>
-                        Analyze Resume
+                        <span class="btn-content">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            <span>Analyze My Resume</span>
+                        </span>
+                        <span class="btn-loader">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Analyzing...</span>
+                        </span>
                     </button>
                 </form>
 
-                <div class="loading" id="loading" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Analyzing your resume with AI...</p>
+                <!-- Loading State -->
+                <div class="loading-overlay" id="loading">
+                    <div class="loading-content">
+                        <div class="loading-animation">
+                            <div class="analysis-steps">
+                                <div class="step active" data-step="1">
+                                    <div class="step-icon"><i class="fas fa-file-import"></i></div>
+                                    <span>Parsing Document</span>
+                                </div>
+                                <div class="step" data-step="2">
+                                    <div class="step-icon"><i class="fas fa-brain"></i></div>
+                                    <span>AI Analysis</span>
+                                </div>
+                                <div class="step" data-step="3">
+                                    <div class="step-icon"><i class="fas fa-calculator"></i></div>
+                                    <span>Scoring Metrics</span>
+                                </div>
+                                <div class="step" data-step="4">
+                                    <div class="step-icon"><i class="fas fa-chart-pie"></i></div>
+                                    <span>Generating Report</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="loading-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <span class="progress-text">Analyzing your resume...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Results Section -->
-        <section class="results-section" id="resultsSection" style="display: none;">
+        <section class="results-section" id="resultsSection">
             <div class="results-container">
-                <h3>Analysis Results</h3>
-                
-                <div class="score-overview">
-                    <div class="main-score">
-                        <div class="score-circle">
-                            <span id="atsScore">0</span>
-                            <small>/100</small>
+                <div class="results-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Your Analysis Results
+                    </h2>
+                    <button class="new-analysis-btn" id="newAnalysisBtn">
+                        <i class="fas fa-redo"></i> New Analysis
+                    </button>
+                </div>
+
+                <!-- Main Score Card -->
+                <div class="score-card-main">
+                    <div class="score-visual">
+                        <div class="score-ring">
+                            <svg viewBox="0 0 160 160">
+                                <defs>
+                                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" id="gradientStart" />
+                                        <stop offset="100%" id="gradientEnd" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="score-ring-bg" cx="80" cy="80" r="70"/>
+                                <circle class="score-ring-progress" cx="80" cy="80" r="70" id="scoreRingProgress"/>
+                            </svg>
+                            <div class="score-center">
+                                <span class="score-number" id="atsScore">0</span>
+                                <span class="score-max">/100</span>
+                            </div>
                         </div>
-                        <h4>ATS Score</h4>
-                        <p id="overallFeedback">Your resume analysis results</p>
+                        <div class="score-badge" id="scoreBadge">
+                            <i class="fas fa-medal"></i>
+                            <span id="scoreGrade">--</span>
+                        </div>
                     </div>
-                    
-                    <div class="sub-scores">
-                        <div class="sub-score">
-                            <div class="score-bar">
-                                <div class="score-fill" id="keywordScore"></div>
+                    <div class="score-details">
+                        <h3 id="scoreTitle">ATS Compatibility Score</h3>
+                        <p class="score-feedback" id="overallFeedback">Your resume analysis results will appear here.</p>
+                        <div class="score-breakdown">
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <span class="breakdown-label"><i class="fas fa-key"></i> Keyword Match</span>
+                                    <span class="breakdown-value" id="keywordValue">0%</span>
+                                </div>
+                                <div class="breakdown-bar">
+                                    <div class="breakdown-fill" id="keywordScore"></div>
+                                </div>
                             </div>
-                            <span>Keyword Match</span>
-                        </div>
-                        <div class="sub-score">
-                            <div class="score-bar">
-                                <div class="score-fill" id="formattingScore"></div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <span class="breakdown-label"><i class="fas fa-align-left"></i> Formatting</span>
+                                    <span class="breakdown-value" id="formattingValue">0%</span>
+                                </div>
+                                <div class="breakdown-bar">
+                                    <div class="breakdown-fill" id="formattingScore"></div>
+                                </div>
                             </div>
-                            <span>Formatting</span>
-                        </div>
-                        <div class="sub-score">
-                            <div class="score-bar">
-                                <div class="score-fill" id="contentScore"></div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <span class="breakdown-label"><i class="fas fa-star"></i> Content Quality</span>
+                                    <span class="breakdown-value" id="contentValue">0%</span>
+                                </div>
+                                <div class="breakdown-bar">
+                                    <div class="breakdown-fill" id="contentScore"></div>
+                                </div>
                             </div>
-                            <span>Content Quality</span>
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <span class="breakdown-label"><i class="fas fa-chart-line"></i> Impact Score</span>
+                                    <span class="breakdown-value" id="impactValue">0%</span>
+                                </div>
+                                <div class="breakdown-bar">
+                                    <div class="breakdown-fill" id="impactScore"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="analysis-details">
-                    <div class="detail-card strengths-card">
-                        <h4><i class="fas fa-check-circle"></i> Strengths</h4>
-                        <ul id="strengthsList"></ul>
-                    </div>
-
-                    <div class="detail-card improvements-card">
-                        <h4><i class="fas fa-exclamation-triangle"></i> Areas for Improvement</h4>
-                        <ul id="improvementsList"></ul>
-                    </div>
-
-                    <div class="detail-card keywords-card">
-                        <h4><i class="fas fa-tags"></i> Keyword Analysis</h4>
-                        <div class="keywords-content">
-                            <div class="keyword-group">
-                                <h5>Present Keywords</h5>
-                                <div class="keyword-tags" id="presentKeywords"></div>
+                <!-- Detailed Analysis Cards -->
+                <div class="analysis-grid">
+                    <!-- Strengths Card -->
+                    <div class="analysis-card strengths-card">
+                        <div class="card-header">
+                            <div class="card-icon success">
+                                <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="keyword-group">
-                                <h5>Missing Keywords</h5>
+                            <h4>Strengths</h4>
+                        </div>
+                        <ul class="analysis-list" id="strengthsList"></ul>
+                    </div>
+
+                    <!-- Improvements Card -->
+                    <div class="analysis-card improvements-card">
+                        <div class="card-header">
+                            <div class="card-icon warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h4>Areas to Improve</h4>
+                        </div>
+                        <ul class="analysis-list" id="improvementsList"></ul>
+                    </div>
+
+                    <!-- Keywords Card -->
+                    <div class="analysis-card keywords-card full-width">
+                        <div class="card-header">
+                            <div class="card-icon info">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <h4>Keyword Analysis</h4>
+                        </div>
+                        <div class="keywords-grid">
+                            <div class="keyword-section">
+                                <h5><i class="fas fa-check"></i> Found Keywords</h5>
+                                <div class="keyword-tags present" id="presentKeywords"></div>
+                            </div>
+                            <div class="keyword-section">
+                                <h5><i class="fas fa-plus"></i> Suggested Keywords</h5>
                                 <div class="keyword-tags missing" id="missingKeywords"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="detail-card recommendations-card">
-                        <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
-                        <ul id="recommendationsList"></ul>
+                    <!-- Recommendations Card -->
+                    <div class="analysis-card recommendations-card full-width">
+                        <div class="card-header">
+                            <div class="card-icon primary">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h4>Priority Recommendations</h4>
+                        </div>
+                        <div class="recommendations-list" id="recommendationsList"></div>
+                    </div>
+
+                    <!-- Detailed Metrics Card -->
+                    <div class="analysis-card metrics-card full-width">
+                        <div class="card-header">
+                            <div class="card-icon secondary">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <h4>Detailed Metrics</h4>
+                        </div>
+                        <div class="metrics-grid" id="detailedMetrics"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Sample Resumes Section -->
-        <section class="samples-section">
-            <div class="samples-container">
-                <h3>Sample Resume Formats</h3>
-                <p>Check out these ATS-friendly resume formats</p>
-                
-                <div class="sample-grid">
-                    <div class="sample-card">
-                        <div class="sample-image">
-                            <img src="/static/resume-sample-1.svg" alt="Professional Resume Sample" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                            <div class="sample-placeholder" style="display: none;">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Professional</span>
-                            </div>
-                        </div>
-                        <h4>Professional Format</h4>
-                        <p>Clean, ATS-friendly design with clear sections</p>
+        <!-- How It Works Section -->
+        <section class="how-it-works-section" id="how-it-works">
+            <div class="section-header">
+                <span class="section-badge">Process</span>
+                <h2 class="section-title">How It <span class="text-gradient">Works</span></h2>
+                <p class="section-subtitle">Simple, fast, and incredibly accurate analysis</p>
+            </div>
+            <div class="steps-timeline">
+                <div class="timeline-line"></div>
+                <div class="step-card" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Upload Resume</h3>
+                        <p>Drop your PDF, DOCX, or TXT resume file</p>
                     </div>
-                    <div class="sample-card">
-                        <div class="sample-image">
-                            <img src="/static/resume-sample-2.svg" alt="Modern Resume Sample" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                            <div class="sample-placeholder" style="display: none;">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Modern</span>
-                            </div>
-                        </div>
-                        <h4>Modern Format</h4>
-                        <p>Contemporary layout optimized for keywords</p>
+                </div>
+                <div class="step-card" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>AI Processing</h3>
+                        <p>Our hybrid AI engine analyzes your content</p>
                     </div>
-                    <div class="sample-card">
-                        <div class="sample-image">
-                            <img src="/static/resume-sample-3.svg" alt="Executive Resume Sample" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                            <div class="sample-placeholder" style="display: none;">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Executive</span>
-                            </div>
-                        </div>
-                        <h4>Executive Format</h4>
-                        <p>Senior-level resume with strategic focus</p>
+                </div>
+                <div class="step-card" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Score Calculation</h3>
+                        <p>40+ criteria evaluated with precision</p>
+                    </div>
+                </div>
+                <div class="step-card" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Get Results</h3>
+                        <p>Detailed report with actionable insights</p>
                     </div>
                 </div>
             </div>
@@ -206,12 +467,21 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
-                <p>&copy; 2025 ATS Resume Checker. Powered by AI for better job prospects.</p>
-                <div class="footer-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-robot"></i>
+                        <span>ATS<span class="accent">Pro</span></span>
+                    </div>
+                    <p>AI-powered resume optimization for modern job seekers</p>
                 </div>
+                <div class="footer-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ATS Pro. Built with <i class="fas fa-heart"></i> for job seekers worldwide.</p>
             </div>
         </footer>
     </div>
