@@ -1698,6 +1698,16 @@ body {
     color: var(--danger);
 }
 
+.author-credit {
+    margin-top: 0.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 0.9rem;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .hero {
