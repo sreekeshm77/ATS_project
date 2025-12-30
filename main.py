@@ -6,7 +6,7 @@ AI-powered ATS score checker with hybrid analysis
 
 import os
 from fastapi import FastAPI, File, UploadFile, Request, Form
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import PyPDF2
@@ -37,6 +37,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Templates
 templates = Jinja2Templates(directory="templates")
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    """Return empty response for favicon requests to prevent 500 error"""
+    return Response(status_code=204)
 
 # Initialize Groq client with proper error handling for serverless
 def get_groq_client():
