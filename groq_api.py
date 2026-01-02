@@ -13,7 +13,7 @@ def groq_api_request(prompt, api_key):
     }
     
     data = {
-        "model": "mixtral-8x7b-32768",
+        "model": "openai/gpt-oss-120b",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.3,
         "max_tokens": 2000
