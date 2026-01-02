@@ -70,7 +70,7 @@ def groq_direct_api(prompt, api_key):
     }
     
     data = {
-        "model": "mixtral-8x7b-32768",
+        "model": "openai/gpt-oss-120b",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.3,
         "max_tokens": 2500
@@ -858,7 +858,7 @@ Return ONLY valid JSON, no other text."""
             
             if groq_client is not None:
                 response = groq_client.chat.completions.create(
-                    model="mixtral-8x7b-32768",
+                    model="openai/gpt-oss-120b",
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.3,
                     max_tokens=1500
@@ -998,3 +998,4 @@ app.mount("/", app)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
